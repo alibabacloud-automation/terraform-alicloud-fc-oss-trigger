@@ -51,7 +51,7 @@ a [provider issue](https://github.com/aliyun/terraform-provider-alicloud/issues/
 
 ## Authors
 
-Created and maintained by WangChao(wc01169074@alibaba-inc.com)
+Created and maintained by Alibaba Cloud Terraform Team(terraform@alibabacloud.com).
 
 ## License
 
