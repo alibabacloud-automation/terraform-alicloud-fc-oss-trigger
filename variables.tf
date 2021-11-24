@@ -79,5 +79,5 @@ variable "policy_name" {
 variable "policy_type" {
   description = "The specification of policy type."
   type        = string
-  default     = "Custom"
+  default     = ""
 }
