@@ -1,8 +1,8 @@
-variable "name" {
-  default = "terraform_test"
-}
-
 data "alicloud_account" "default" {}
+
+variable "name" {
+  default = "terraformtest20220111"
+}
 
 data "alicloud_regions" "default" {
   current = true
@@ -46,8 +46,8 @@ resource "alicloud_ram_role" "default" {
 }
 
 resource "alicloud_ram_policy" "default" {
-  name        = var.name
-  document    = <<EOF
+  policy_name = var.name
+  policy_document    = <<EOF
     {
         "Version": "1",
         "Statement": [
@@ -69,15 +69,19 @@ resource "alicloud_ram_policy" "default" {
 }
 
 module "example" {
-  source      = "../"
-  name        = var.name
+  source      = "../.."
+  name        = "terraformtest008"
   service     = alicloud_fc_service.default.name
-  bucket_name = alicloud_oss_bucket.default.bucket
   bucket_id   = alicloud_oss_bucket.default.id
   oss_key     = alicloud_oss_bucket_object.default.key
-  regions     = data.alicloud_regions.default.regions.0.id
-  account     = data.alicloud_account.default.id
-  role_arn    = alicloud_ram_role.default.arn
+  memory_size = var.memory_size
+  runtime     = var.runtime
+  handler     = var.handler
   role_name   = alicloud_ram_role.default.name
   policy_name = alicloud_ram_policy.default.name
+  policy_type = "Custom"
+  role_arn    = alicloud_ram_role.default.arn
+  bucket_name = alicloud_oss_bucket.default.bucket
+  regions     = data.alicloud_regions.default.regions.0.id
+  account     = data.alicloud_account.default.id
 }
