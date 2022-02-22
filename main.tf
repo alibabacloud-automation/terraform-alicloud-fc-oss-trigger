@@ -1,6 +1,6 @@
 resource "alicloud_fc_function" "default" {
-  service     = var.service
   name        = var.name
+  service     = var.service
   oss_bucket  = var.bucket_id
   oss_key     = var.oss_key
   memory_size = var.memory_size
@@ -15,25 +15,12 @@ resource "alicloud_ram_role_policy_attachment" "default" {
 }
 
 resource "alicloud_fc_trigger" "default" {
+  name       = var.name
   service    = var.service
   function   = alicloud_fc_function.default.name
-  name       = var.name
   role       = var.role_arn
-  source_arn = "acs:oss:${var.regions}:${var.account}:${var.bucket_name}"
-  type       = "oss"
-  config     = <<EOF
-        {
-		"events": [
-		  "oss:ObjectCreated:PostObject",
-          "oss:ObjectCreated:PutObject"
-		],
-		"filter": {
-			"key": {
-                "prefix": "source/",
-                "suffix": ".png"
-			}
-		}
-	}
-EOF
+  source_arn = "acs:${var.type}:${var.regions}:${var.account}:${var.bucket_name}"
+  type       = var.type
+  config     = var.config
   depends_on = ["alicloud_ram_role_policy_attachment.default"]
 }
